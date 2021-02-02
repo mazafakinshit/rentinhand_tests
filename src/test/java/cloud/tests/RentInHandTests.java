@@ -21,21 +21,32 @@ import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
+
+
 @Epic("Rent in Hand")
 @Story("Rentinhand tests")
 @Tag("RentInHandTests")
-
-
-
 public class RentInHandTests extends TestBase {
 
-    @BeforeEach
-    void beforeEach() {
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
+        @BeforeEach
+        void beforeEach() {
+            SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
 
-        if (System.getProperty("selenoid_url") != null) {
-            Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
+            if (System.getProperty("selenoid_url") != null) {
+                Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
+            }
         }
 
+        @Test
+        @Description("Проверка входа на сайт проекта")
+        void checkSiteCanBeFound(){
+
+            step("Заходим на сайт", () -> {
+                open("https://rentinhand.ru/");
+            });
+            step("Проверяем наличие текста Rent in hand", () -> {
+                $("html").shouldHave(text("Rent in Hand"));
+            });
+
+        }
     }
-}
