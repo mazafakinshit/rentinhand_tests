@@ -28,27 +28,28 @@ import static io.qameta.allure.Allure.step;
 @Tag("RentInHandTests")
 public class RentInHandTests extends TestBase {
 
-        @BeforeEach
-        void beforeEach() {
-            SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
+    @BeforeEach
+    void beforeEach() {
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
 
-            if (System.getProperty("selenoid_url") != null) {
-                Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
-            }
+        if (System.getProperty("selenoid_url") != null) {
+        Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
         }
 
-        @Test
-        @Description("Проверка входа на сайт проекта")
-        void checkSiteCanBeFound(){
+    }
 
-            step("Заходим на сайт", () -> {
-                open("https://rentinhand.ru/");
-            });
-            step("Проверяем наличие текста Rent in hand", () -> {
-                $("html").shouldHave(text("Rent in Hand"));
-            });
+    @Test
+    @Description("Проверка входа на сайт проекта")
+    void checkSiteCanBeFound(){
 
-        }
+        step("Заходим на сайт", () -> {
+        open("https://rentinhand.ru/");
+        });
+        step("Проверяем наличие текста Rent in hand", () -> {
+        $("html").shouldHave(text("Rent in Hand"));
+        });
+
+    }
 
     @Test
     @Description("Проверяем работоспособность кнопок навигационной панели")
@@ -84,7 +85,25 @@ public class RentInHandTests extends TestBase {
             $("html").shouldHave(text("Контактная информация"));
         });
 
-        }
+    }
 
+    @Test
+    @Description("")
+    void checkAuthorizationForm(){
+
+        step("Заходим в раздел авторизации", () -> {
+            open("https://rentinhand.ru/");
+            $(byText("Вход")).click();
+            $("html").shouldHave(text("Авторизация"));
+        });
+        step("Заполняем форму авторизации", () -> {
+            $("#login").setValue("test");
+            $("#password").setValue("123123").pressEnter();
+        });
+        step("Проверяем успешную авторизацию", () -> {
+            $("html").shouldHave(text("Директор"));
+        });
+
+    }
 
 }
