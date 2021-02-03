@@ -53,7 +53,7 @@ public class RentInHandTests extends TestBase {
 
     @Test
     @Description("Проверяем работоспособность кнопок навигационной панели")
-    void checkButton() {
+    void checkButtons() {
         step("Заходим на сайт", () -> {
             open("https://rentinhand.ru/");
         });
@@ -85,10 +85,20 @@ public class RentInHandTests extends TestBase {
             $("html").shouldHave(text("Контактная информация"));
         });
 
+        step("Проверяем работоспособность кнопок Подробнее в разделе Расширения", () -> {
+            $(byText("Расширения")).click();
+            $$(byText("Подробнее")).get(0).click();
+            $("html").shouldHave(text("Магазин"));
+            sleep(2000);
+            $(byText("Расширения")).click();
+            $$(byText("Подробнее")).get(1).click();
+            $("html").shouldHave(text("Мастерская"));
+            sleep(2000);
+        });
     }
 
     @Test
-    @Description("")
+    @Description("Проверка авторизации на сайте проекта")
     void checkAuthorizationForm(){
 
         step("Заходим в раздел авторизации", () -> {
