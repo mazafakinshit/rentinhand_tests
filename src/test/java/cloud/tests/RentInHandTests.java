@@ -95,6 +95,17 @@ public class RentInHandTests extends TestBase {
             $("html").shouldHave(text("Мастерская"));
             sleep(2000);
         });
+
+        step("Проверяем работоспособность кнопок выбора срока использования продукта в разделе Тарифы", () -> {
+            $(byText("Тарифы")).click();
+            $(byText("1 месяц")).click();
+            $("html").shouldHave(text("Старт"),text("1000"));
+            $(byText("6 месяцев")).click();
+            $("html").shouldHave(text("Старт"),text("750"));
+            $(byText("12 месяцев")).click();
+            $("html").shouldHave(text("Старт"),text("500"));
+        });
+
     }
 
     @Test
