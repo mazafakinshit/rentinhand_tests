@@ -16,6 +16,7 @@ import cloud.autotests.utils.FileUtils;
 
 import java.io.File;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -104,6 +105,32 @@ public class RentInHandTests extends TestBase {
             $("html").shouldHave(text("Старт"),text("750"));
             $(byText("12 месяцев")).click();
             $("html").shouldHave(text("Старт"),text("500"));
+        });
+
+        step("Проверяем работоспособность кнопок Попробовать бесплатно 14 дней", () -> {
+            $(".navbar-brand").click();
+            $$(byText("Попробовать бесплатно 14 дней")).get(1).click();
+            sleep(1000);
+            $("#form-registration").shouldHave(text("Персональные данные"));
+            $(".navbar-brand").click();
+            $$(byText("Попробовать бесплатно 14 дней")).get(2).click();
+            sleep(1000);
+            $("#form-registration").shouldHave(text("Персональные данные"));
+            $(".navbar-brand").click();
+            $$(byText("Попробовать бесплатно 14 дней")).get(3).click();
+            sleep(1000);
+            $("#form-registration").shouldHave(text("Персональные данные"));
+        });
+
+        step("Проверка работоспособности ссылок Подробнее", () -> {
+            $(".navbar-brand").click();
+            $(byText("Административная веб-панель")).scrollIntoView(true);
+            $(byPartialLinkText("Подробнее")).click();
+            $("#page-top").shouldHave(text("Административная панель включает в себя следующие разделы"));
+            $(".navbar-brand").click();
+            $(byText("Мобильное приложение")).scrollIntoView(true);
+            $(byPartialLinkText("Подробнее")).click();
+            $("#page-top").shouldHave(text("один из способов облегчить работу на точках проката и продаж"));
         });
 
     }
