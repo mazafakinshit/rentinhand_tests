@@ -20,8 +20,8 @@ targetCompatibility = 1.8
 defaultTasks 'help'
 
 ext {
-    allureVersion = '2.13.3'
-    junitVersion = '5.6.2'
+    allureVersion = '2.13.8'
+    junitVersion = '5.7.0'
 }
 
 repositories {
@@ -40,7 +40,7 @@ allure {
 
 dependencies {
     testImplementation 'org.aspectj:aspectjweaver:1.9.5'
-    testImplementation 'com.codeborne:selenide:5.12.2'
+    testImplementation 'com.codeborne:selenide:5.18.0'
     testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
     testImplementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
     testImplementation 'io.rest-assured:rest-assured:4.1.2'
@@ -57,7 +57,7 @@ tasks.withType(JavaCompile) {
 }
 
 tasks.withType(Test) {
-    systemProperties = System.properties
+    systemProperties += System.properties
     if (project.hasProperty("web_threads")) {
         systemProperties += [
                 'junit.jupiter.execution.parallel.enabled'                 : true,
@@ -73,9 +73,6 @@ tasks.withType(Test) {
             exceptionFormat "short"
         }
     }
-    if (project.hasProperty("allure_results")) {
-        systemProperty 'allure_results', project.getProperty("allure_results")
-    }
 }
 
 task web(type: Test) {
@@ -89,41 +86,5 @@ task RentInHandTests(type: Test) {
     useJUnitPlatform {
         includeTags 'RentInHandTests'
 
-    }
-}
-
-task android(type: Test) {
-    useJUnitPlatform {
-        includeTags 'android'
-    }
-    systemProperty 'platform', 'android'
-}
-
-task ios(type: Test) {
-    useJUnitPlatform {
-        includeTags 'ios'
-    }
-    systemProperty 'platform', 'ios'
-}
-
-help {
-    doFirst {
-        println ""
-        println "************************************************************************ "
-        println "***                                                                  *** "
-        println "*** Welcome to                                                       *** "
-        println "*** https://github.com/autotests-cloud/selenide-junit5-allure-gradle *** "
-        println "***                                                                  *** "
-        println "*** Requirements for mobile tests:                                   *** "
-        println "*** - start appium server locally                                    *** "
-        println "*** - install XCode with iPhone Simulators                           *** "
-        println "***                                                                  *** "
-        println "*** You can run tests by one of the following commands:              *** "
-        println "*** ./gradlew web                                                    *** "
-        println "*** ./gradlew android                                                *** "
-        println "*** ./gradlew ios                                                    *** "
-        println "***                                                                  *** "
-        println "************************************************************************ "
-        println ""
     }
 }
