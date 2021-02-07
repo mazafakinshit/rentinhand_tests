@@ -1,4 +1,4 @@
-package cloud.autotests.helpers;
+package cloud.helpers;
 
 import static java.lang.Boolean.parseBoolean;
 

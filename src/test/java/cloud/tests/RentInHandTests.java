@@ -33,20 +33,20 @@ public class RentInHandTests extends TestBase {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true));
 
         if (System.getProperty("selenoid_url") != null) {
-        Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
+            Configuration.remote = "http://" + System.getProperty("selenoid_url") + ":4444/wd/hub";
         }
 
     }
 
     @Test
     @Description("Проверка входа на сайт проекта")
-    void checkSiteCanBeFound(){
+    void checkSiteCanBeFound() {
 
         step("Заходим на сайт", () -> {
-        open("https://staging.rentinhand.ru/");
+            open("https://staging.rentinhand.ru/");
         });
         step("Проверяем наличие текста Rent in hand", () -> {
-        $("html").shouldHave(text("Rent in Hand"));
+            $("html").shouldHave(text("Rent in Hand"));
         });
 
     }
@@ -127,7 +127,7 @@ public class RentInHandTests extends TestBase {
 
     @Test
     @Description("Проверка ссылок на сайте проекта")
-    void checkLinks(){
+    void checkLinks() {
 
         step("Заходим на сайт", () -> {
             open("https://staging.rentinhand.ru/");
@@ -165,18 +165,104 @@ public class RentInHandTests extends TestBase {
     void checkAuthorizationForm() {
 
         step("Заходим в раздел авторизации", () -> {
-            open("https://rentinhand.ru/");
-            $(byText("Вход")).click();
-            $("html").shouldHave(text("Авторизация"));
+            open("https://staging.rentinhand.ru/");
+            $(byText("Логин")).click();
+            $(".custom-form").shouldHave(text("Авторизация"));
         });
         step("Заполняем форму авторизации", () -> {
-            $("#login").setValue("test");
-            $("#password").setValue("123123").pressEnter();
+            $("#input-login").setValue("test");
+            $("#input-password").setValue("123123").pressEnter();
         });
         step("Проверяем успешную авторизацию", () -> {
-            $("html").shouldHave(text("Директор"));
+            $("h2").shouldHave(text("Александр Швидченко"));
         });
 
     }
 
+    @Test
+    @Description("Проверка навигационной панели личного кабинета")
+    void checkNavigationPanel() {
+
+        step("Заходим в раздел авторизации", () -> {
+            open("https://lk-staging.rentinhand.ru/ru/login");
+            $(".custom-form").shouldHave(text("Авторизация"));
+        });
+        step("Заполняем форму авторизации", () -> {
+            $("#input-login").setValue("test");
+            $("#input-password").setValue("123123").pressEnter();
+        });
+        step("Проверяем успешную авторизацию", () -> {
+            $("h2").shouldHave(text("Александр Швидченко"));
+        });
+        step("Проверяем вкладку Расходы", () -> {
+            $(byText("Расходы")).click();
+            $("html").shouldHave(text("Вид расходов"));
+        });
+        step("Проверяем вкладку Клиенты", () -> {
+            $(byText("Клиенты")).click();
+            $("html").shouldHave(text("Фио"));
+        });
+        step("Проверяем вкладку Сотрудники", () -> {
+            $(byText("Сотрудники")).click();
+            $("html").shouldHave(text("Фио"));
+        });
+        step("Проверяем вкладку Инвентарь", () -> {
+            $(byText("Инвентарь")).click();
+            $(".navbar-static-side").shouldHave(text("Список"));
+            $(byText("Список")).click();
+            $("html").shouldHave(text("Всего"));
+            $(byText("Бронирование")).click();
+            $("html").shouldHave(text("Сегодня"));
+        });
+        step("Проверяем вкладку Аренды", () -> {
+            $(byText("Аренды")).click();
+            $(".navbar-static-side").shouldHave(text("Создать"));
+            $(byText("Создать")).click();
+            $("html").shouldHave(text("Укажите время аренды"));
+            $(byText("Список")).click();
+            $("html").shouldHave(text("Всего"));
+            $(byText("Бронирование")).click();
+            $("html").shouldHave(text("Сегодня"));
+        });
+        step("Проверяем вкладку Магазин", () -> {
+            $(byText("Магазин")).click();
+            $(".navbar-static-side").shouldHave(text("Создать"));
+            $(byText("Создать")).click();
+            $("html").shouldHave(text("Укажите клиента"));
+            $(byText("Продажи")).click();
+            $("html").shouldHave(text("Всего"));
+            //$(byText("Товар")).click();
+            //$("html").shouldHave(text("Столбцы"));
+        });
+        step("Проверяем вкладку Мастерсткая", () -> { // МАСТЕРСКАЯ
+            $(byText("Мастерсткая")).click();    // МАСТЕРСКАЯ
+            $(".navbar-static-side").shouldHave(text("Создать"));
+            $(byText("Создать")).click();
+            $("html").shouldHave(text("Укажите клиента"));
+            $(byText("Заявки")).click();
+            $("html").shouldHave(text("Всего"));
+            //$(byText("Услуги")).click();
+            //$("html").shouldHave(text("Столбцы"));
+        });
+        step("Проверяем вкладку Настройки", () -> {
+            $(byText("Настройки")).click();
+            $(".navbar-static-side").shouldHave(text("Пункты проката"));
+            $$(byText("Настройки")).get(1).click();
+            $("html").shouldHave(text("Основные настройки"));
+            $(byText("Пункты проката")).click();
+            $("html").shouldHave(text("Всего"));
+        });
+        step("Проверяем вкладку Поддержка", () -> {
+            $(byText("Поддержка")).click();
+            $(".navbar-static-side").shouldHave(text("Что нового"));
+            $(byText("Обращения")).click();
+            $("html").shouldHave(text("Всего"));
+            $(byText("Справочник")).click();
+            $("html").shouldHave(text("Всего"));
+            $(byText("Что нового")).click();
+            $("#page-wrapper").shouldBe(visible);
+        });
+
+    }
 }
+
